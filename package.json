@@ -1,7 +1,11 @@
 {
   "name": "jquery-builder",
   "version": "1.0.0",
-  "description": "",
+  "description": "Build jQuery file",
+  "repository": {
+  	"type": "git",
+  	"url": "https://gitlab.com/clemgrim/jquery-builder.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "node test/jquery.js",
