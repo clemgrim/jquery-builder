@@ -1,34 +1,38 @@
-var fs = require('fs'),
+var fs = require('fs-extra'),
 	path = require('path'),
 	chalk = require('chalk'),
 	_ = require('lodash'),
-	copy = require('fs-extra').copy,
 	exec = require('child_process').exec,
 	grunt = process.platform === 'win32' ? 'grunt.cmd' : 'grunt';
 
 module.exports = {
-	build: function (exclude, cb) {
+	build: function (options, cb) {
 		cb = cb || _.noop;
 		
 		if (!fs.existsSync(__dirname + '/jquery')) {
-			console.error(chalk.red('Error') + ' jQuery sources was not fount. Please run ' + chalk.gray('node node_modules/jqbuild/init.js') + ' in your terminal.');
 			cb('jQuery sources was not fount');
 			process.exit();
 		}
 		
-		exec(grunt + ' custom:' + getExclude(exclude), {cwd: __dirname + '/jquery'}, function (err) {
+		exec(grunt + ' custom:' + getExclude(options.exclude), {cwd: __dirname + '/jquery'}, function (err) {
 			if (err) {
 				cb(err);
 			} else {
-				copy(__dirname + '/jquery/dist', './dist', function (err) {
-					if (err) {
-						console.error(chalk.red(err));
-					} else {
-						console.log(chalk.green('>>') + ' jQuery has been saved in ' + path.resolve('./dist'));
-					}
-					
-					cb(err);
-				});
+				if (options.outputDir) {
+					fs.copy(__dirname + '/jquery/dist', options.outputDir, function (ferr) {
+						if (ferr) {
+							cb(ferr);
+						} else {
+							if (!options.silent) {
+								process.stdout.write(chalk.green('>>') + ' jQuery has been saved in ' + path.resolve(options.outputDir));
+							}
+							
+							cb(ferr, path.resolve(options.outputDir + '/jquery.js'));
+						}
+					});
+				} else {
+					cb(err, path.resolve(__dirname + '/jquery/dist/jquery.js'));
+				}
 			}
 		});
 	},

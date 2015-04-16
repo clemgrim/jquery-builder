@@ -1,13 +1,19 @@
 var jquery = require('../index.js'),
 	assert = require('assert'),
-	fs = require('fs'),
-	start = new Date();
+	fs = require('fs-extra'),
+	start = new Date(),
+	options = {
+		exclude: ['deprecated','effects'],
+		silent: true,
+		outputDir: './dist'
+	};
 
-jquery.build(['deprecated','effects'], function (err) {
+jquery.build(options, function (err, file) {
 	assert.equal(err, null, 'Unable to build jQuery');
-	
-	fs.stat('./dist/jquery.js', function (err, stats) {
+
+	fs.stat(file, function (err, stats) {
+
 		assert.equal(err, null, 'File has not been created');
-		assert.equal(stats.atime > start, true, 'File has not been written');
+		assert.equal(stats.mtime > start, true, 'File has not been written');
 	});
 });

@@ -1,10 +1,9 @@
 var exec = require('child_process').exec,
-	fs = require('fs')
-	rimraf = require('rimraf');
+	fs = require('fs-extra');
 
 var repo = {
 	clone: function (url, path, cb) {
-		rimraf.sync(path);
+		fs.removeSync(path);
 		
 		return exec('git clone ' + url + ' ' + path, cb);
 	},
