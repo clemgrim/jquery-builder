@@ -2,8 +2,7 @@ var fs = require('fs-extra'),
 	path = require('path'),
 	chalk = require('chalk'),
 	_ = require('lodash'),
-	exec = require('child_process').exec,
-	grunt = process.platform === 'win32' ? 'grunt.cmd' : 'grunt';
+	exec = require('child_process').exec;
 
 module.exports = {
 	build: function (options, cb) {
@@ -13,6 +12,8 @@ module.exports = {
 			cb('jQuery sources was not fount');
 			process.exit();
 		}
+		
+		grunt = 'node ' + __dirname + '/node_modules/grunt-cli/bin/grunt';
 		
 		exec(grunt + ' custom:' + getExclude(options.exclude), {cwd: __dirname + '/jquery'}, function (err) {
 			if (err) {

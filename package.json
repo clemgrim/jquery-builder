@@ -17,6 +17,7 @@
   "dependencies": {
     "chalk": "^1.0.0",
     "fs-extra": "^0.18.1",
+    "grunt-cli": "^0.1.13",
     "lodash": "^3.0.1",
     "minimist": "^1.1.0",
     "q": "^1.1.2"
