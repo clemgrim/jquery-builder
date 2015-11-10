@@ -8,7 +8,7 @@ var fs = require('fs'),
 	
 var jqueryPromise = Q.nfcall(repo.cloneOrUpdate, 'https://github.com/jquery/jquery.git', './jquery')
 	.then(function () {
-		return Q.nfcall(exec, 'cd ./jquery && git checkout 1.11-stable');
+		return Q.nfcall(exec, 'cd ./jquery && git checkout 1.12-stable');
 	})
 	.then(function (err) {
 		console.log(chalk.green('>') + ' jQuery repository is up to date');
